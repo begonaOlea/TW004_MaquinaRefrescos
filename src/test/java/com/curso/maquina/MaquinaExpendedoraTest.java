@@ -12,22 +12,12 @@ public class MaquinaExpendedoraTest {
 
 	private MaquinaExpendedora me;
 
-	@Before
-	public void setUp() throws Exception {
-		
-		
-		me = new MaquinaExpendedora(null, 100);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testVenderSinStok() {
 		
 		Refresco rVacio = new Refresco("cola", 80,0);
-		me.setRefresco(rVacio);
+		me = new MaquinaExpendedora(rVacio, 10); //tiene 10 cts de cambios
+
 		
 		double espero = -1.0;
 		double cambios = me.vender(100);
@@ -55,7 +45,16 @@ public class MaquinaExpendedoraTest {
 
 	}
 	
-	
+	@Test
+	public void testVenderRefrescoPeroNohasPuestoDineroSuf() {
+		Refresco r = new Refresco("cola", 80, 4);
+		MaquinaExpendedora me = new MaquinaExpendedora(r, 100); 
+
+		double resultado = me.vender(1); // 1 centimo
+		if(resultado != -3)
+			fail("Fallo. Has puesto un importe inferior al valor del ref "
+					+ "por lo que espero -3 pero das " + resultado);
+	}
 	
 	
 	@Test

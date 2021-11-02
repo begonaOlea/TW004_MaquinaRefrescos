@@ -1,6 +1,6 @@
 package com.curso.maquina;
 
-public class MaquinaExpendedora2 {
+public class MaquinaExpendedora3 {
 	
 	//informe
 	private double recaudacion;
@@ -9,7 +9,7 @@ public class MaquinaExpendedora2 {
 	private double cambios;
 	private Refresco[] refrescos; //3 
 	
-	public MaquinaExpendedora2(Refresco[] refrescos, 
+	public MaquinaExpendedora3(Refresco[] refrescos, 
 			double cambiosIni) {
 		this.recaudacion = 0.0;
 		this.recaudacion = 0;
@@ -27,21 +27,28 @@ public class MaquinaExpendedora2 {
 	 * @param dineroIng
 	 * @return
 	 */
-	public double vender(double dineroIng, int posicion){
+	public double vender(double dineroIng, int posicion) 
+			throws StockException, CambiosException{
 		//validar datos entrada
 		//PENDIENTE
+		if(dineroIng < 0 ) {
+		 throw new IllegalArgumentException("Debe introducir un importe");
+		}
 		
 		//validar stock
 		if(this.refrescos[posicion].estaAgotado()) {
-			return -1;
+			throw new StockException("Refesco Agotado");
 		}
 		//validar si hay cambio suficiente
 		double cambioNec = dineroIng - this.refrescos[posicion].getPrecioUnidad();
 		if(cambioNec < 0 ) {
-			return -3; //no dinero suficiente
+			
+			 //no dinero suficiente
+			throw new CambiosException(cambioNec, "Falta dinero");
 		}
 		if(cambioNec > this.cambios) {
-			return -2;
+			//faltan cambios
+			throw new CambiosException("No hay cambios suficientes");
 		}
 		
 		//todo ok
